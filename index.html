@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css"></link>
+    <!-- ROSjs cdn -->
+    <script type="text/javascript" src="EventEmitter.min.js"></script>
+    <script type="text/javascript" src="roslib.min.js"></script>
+    <style type="text/css">
+
+  </style>
+  </head>
+  <body>
+<nav><div id="header-box"><img src="AUV 2.0.jpg" alt="logo" style="width:100px;"></div>
+   <div id="heading">Tiburon Control Pannel</div>
+</nav>
+  <div class="container-fluid"></br>
+    <strong><div align="center" id='feedback'></div></strong>
+    <ul align="center" class="nav nav-tabs" id="nav-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" id="control-tab" aria-controls="control" aria-selected="true" href="#control">Control</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" id="hardware-tab" aria-controls="hardware" aria-selected="false" href="#hardware">Hardware</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" id="mission-tab" aria-controls="mission" aria-selected="false" href="#mission">Mission</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" id="tools-tab" aria-controls="tools" aria-selected="false" href="#tools">Tools</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="control" role="tabpanel" aria-labelledby="control-tab">
+        <h2>Control</h2>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <strong>ROS Master</strong>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <button class="btn btn-lg btn-success" onclick="super_controller()" value="10" id="super_controller">Stop All</button>
+            <button class="btn btn-lg btn-success" onclick="super_controller_quit()" value="20" id="super_controller_quit">Quit</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <strong>Thruster Controller</strong>
+          </div>
+          <div class="col-md-3 col-sm-3">
+            <button class="btn btn-lg btn-success" onclick="thruster_controller()" value="1" id="th-controller">Start</button>
+            <button class="btn btn-lg btn-success" onclick="thruster_controller_stop()" value="11" id="th-controller-stop">View</button>
+          </div>
+        </div>
+
+        <!-- Thruster Controller -->
+      <div class="container">
+        <h2>Thruster Controller</h2>
+        <div class="slidecontainer">
+          <input type="range" min="1000" max="2000" onclick="pubThruster_speeds()" value="1500" class="slider" id="fLeft">
+          <p>Front Left: <span id="fLeft_value"></span></p>
+        </div>
+        <div class="slidecontainer">
+          <input type="range" min="1000" max="2000" onclick="pubThruster_speeds()" value="1500" class="slider" id="fRight">
+          <p>Front Right: <span id="fRight_value"></span></p>
+        </div>
+        <div class="slidecontainer">
+          <input type="range" min="1000" max="2000" onclick="pubThruster_speeds()" value="1500" class="slider" id="back">
+          <p>Back: <span id="back_value"></span></p>
+        </div>
+        <div class="slidecontainer">
+          <input type="range" min="1000" max="2000" onclick="pubThruster_speeds()" value="1500" class="slider" id="sLeft">
+          <p>Side Left: <span id="sLeft_value"></span></p>
+        </div>
+        <div class="slidecontainer">
+          <input type="range" min="1000" max="2000" onclick="pubThruster_speeds()" value="1500" class="slider" id="sRight">
+          <p>Side Right : <span id="sRight_value"></span></p>
+        </div>
+        <div class="slidecontainer">
+          <input type="range" min="1000" max="2000" onclick="pubThruster_speeds()" value="1500" class="slider" id="bottom">
+          <p>Bottom: <span id="bottom_value"></span></p>
+        </div>
+      </div>
+        <!--End Thruster Controller -->
+
+      </div>
+        <div class="tab-pane fade" id="hardware" role="tabpanel" aria-labelledby="hardware-tab">
+          <h2 id="hardware">Hardware</h2>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>Thruster Driver</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="thruster_driver()" value="2" id="th-driver">Start</button>
+              <button class="btn btn-lg btn-success" onclick="thruster_driver_stop()" value="12" id="th-driver-stop">View</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>Serial Node</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="serial_node()" value="3" id="serial_node">Start</button>
+              <button class="btn btn-lg btn-success" onclick="serial_node_stop()" value="13" id="serial_node-stop">View</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>VectorNav</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="vector_nav()" value="4" id="vector_nav">Start</button>
+              <button class="btn btn-lg btn-success" onclick="vector_nav_stop()" value="14" id="vector_nav-stop">View</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>Bottom Camera</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="bottom_camera()" value="5" id="bottom_camera">Start</button>
+              <button class="btn btn-lg btn-success" onclick="bottom_camera_stop()" value="15" id="bottom_camera-stop">View</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>Front Camera</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="front_camera()" value="6" id="front_camera">Start</button>
+              <button class="btn btn-lg btn-success" onclick="front_camera_stop()" value="16" id="front_camera-stop">View</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="mission" role="tabpanel" aria-labelledby="mission-tab">
+          <h2 id="mission">Mission</h2>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>Sync_Vn</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="sync_vn()" value="7" id="sync_vn">Start</button>
+              <button class="btn btn-lg btn-success" onclick="sync_vn_stop()" value="17" id="sync_vn-stop">View</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>Controller</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="hammerhead_control()" value="8" id="hammerhead_control">Start</button>
+              <button class="btn btn-lg btn-success" onclick="hammerhead_control_stop()" value="18" id="hammerhead_control-stop">View</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <strong>PID</strong>
+            </div>
+            <div class="col-md-3 col-sm-3">
+              <button class="btn btn-lg btn-success" onclick="pid_controller()" value="9" id="pid_controller">Start</button>
+              <button class="btn btn-lg btn-success" onclick="pid_controller_stop()" value="19" id="pid_controller-stop">View</button>
+            </div>
+          </div>
+
+          <!-- PID Controller -->
+        <div class="container">
+          <h2>PID Controller</h2>
+            <ul class="nav nav-tabs" id="pidTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="surge-tab" data-toggle="tab" href="#surge" role="tab" aria-controls="surge" aria-selected="true">Surge</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="sway-tab" data-toggle="tab" href="#sway" role="tab" aria-controls="sway" aria-selected="false">Sway</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="heave-tab" data-toggle="tab" href="#heave" role="tab" aria-controls="heave" aria-selected="false">Heave</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="roll-tab" data-toggle="tab" href="#roll" role="tab" aria-controls="roll" aria-selected="false">Roll</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="pitch-tab" data-toggle="tab" href="#pitch" role="tab" aria-controls="pitch" aria-selected="false">Pitch</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="yaw-tab" data-toggle="tab" href="#yaw" role="tab" aria-controls="yaw" aria-selected="false">Yaw</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="pidTabContent">
+              <!-- Surge -->
+              <div class="tab-pane fade show active" id="surge" role="tabpanel" aria-labelledby="surge-tab">
+                <h3>Surge</h3>
+                <div class="slidecontainer">
+                  <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kp_surge_slider">
+                  <p>Kp: <span id="kp_surge_slider_value"></span></p>
+                </div>
+                <div class="slidecontainer">
+                  <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0.119" step="0.001" class="slider" id="kp_surge_slider_2">
+                  <p>Kp: <span id="kp_surge_slider_value_2"></span></p>
+                </div><br/>
+                <div class="slidecontainer">
+                  <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="ki_surge_slider">
+                  <p>Ki: <span id="ki_surge_slider_value"></span></p>
+                </div>
+                <div class="slidecontainer">
+                  <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="ki_surge_slider_2">
+                  <p>Ki: <span id="ki_surge_slider_value_2"></span></p>
+                </div><br/>
+                <div class="slidecontainer">
+                  <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kd_surge_slider">
+                  <p>Kd: <span id="kd_surge_slider_value"></span></p>
+                </div>
+                <div class="slidecontainer">
+                  <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="kd_surge_slider_2">
+                  <p>Kd: <span id="kd_surge_slider_value_2"></span></p>
+                </div><br/>
+                <div class="slidecontainer">
+                  <input type="range" min="-10" max="10" onclick="pubPID_setpoints()" value="0" class="slider" id="sp_surge_slider">
+                  <p>Sp: <span id="sp_surge_slider_value"></span></p>
+                </div>
+                <div class="slidecontainer">
+                  <input type="range" min="0.00" max="1.00" onclick="pubPID_setpoints()" value="0" step="0.01" class="slider" id="sp_surge_slider_2">
+                  <p>Sp: <span id="sp_surge_slider_value_2"></span></p>
+                </div>
+              </div>
+            <!-- End Surge -->
+            <!-- Sway -->
+            <div class="tab-pane fade" id="sway" role="tabpanel" aria-labelledby="sway-tab">
+              <h3>Sway</h3>
+              <div class="slidecontainer">
+                <input type="range" min="0" max="20" onclick="pubPID_params()" value="0" class="slider" id="kp_sway_slider">
+                <p>Kp: <span id="kp_sway_slider_value"></span></p>
+              </div>
+              <div class="slidecontainer">
+                <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0.051" step="0.001" class="slider" id="kp_sway_slider_2">
+                <p>Kp: <span id="kp_sway_slider_value_2"></span></p>
+              </div>
+              <br/>
+              <div class="slidecontainer">
+                <input type="range" min="0" max="20" onclick="pubPID_params()" value="0" class="slider" id="ki_sway_slider">
+                <p>Ki: <span id="ki_sway_slider_value"></span></p>
+              </div>
+              <div class="slidecontainer">
+                <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="ki_sway_slider_2">
+                <p>Ki: <span id="ki_sway_slider_value_2"></span></p>
+              </div><br/>
+              <div class="slidecontainer">
+                <input type="range" min="0" max="20" onclick="pubPID_params()" value="0" class="slider" id="kd_sway_slider">
+                <p>Kd: <span id="kd_sway_slider_value"></span></p>
+              </div>
+              <div class="slidecontainer">
+                <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="kd_sway_slider_2">
+                <p>Kd: <span id="kd_sway_slider_value_2"></span></p>
+              </div><br/>
+              <div class="slidecontainer">
+                <input type="range" min="-10" max="10" onclick="pubPID_setpoints()" value="0" class="slider" id="sp_sway_slider">
+                <p>Sp: <span id="sp_sway_slider_value"></span></p>
+              </div>
+              <div class="slidecontainer">
+                <input type="range" min="-10" max="10" onclick="pubPID_setpoints()" value="0" step="0.01" class="slider" id="sp_sway_slider_2">
+                <p>Sp: <span id="sp_sway_slider_value_2"></span></p>
+              </div>
+            </div>
+
+          <div class="tab-pane fade" id="heave" role="tabpanel" aria-labelledby="heave-tab">
+            <h3>Heave</h3>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kp_heave_slider">
+              <p>Kp: <span id="kp_heave_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0.010" step="0.001" class="slider" id="kp_heave_slider_2">
+              <p>Kp: <span id="kp_heave_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="ki_heave_slider">
+              <p>Ki: <span id="ki_heave_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0.005" step="0.001" class="slider" id="ki_heave_slider_2">
+              <p>Ki: <span id="ki_heave_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kd_heave_slider">
+              <p>Kd: <span id="kd_heave_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0.678" step="0.001" class="slider" id="kd_heave_slider_2">
+              <p>Kd: <span id="kd_heave_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="935" max="1080" onclick="pubPID_setpoints()" value="935" class="slider" id="sp_heave_slider">
+              <p>Sp: <span id="sp_heave_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="935" max="936" onclick="pubPID_setpoints()" value="935" step="0.01" class="slider" id="sp_heave_slider_2">
+              <p>Sp: <span id="sp_heave_slider_value_2"></span></p>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="roll" role="tabpanel" aria-labelledby="roll-tab">
+            <h3>Roll</h3>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kp_roll_slider">
+              <p>Kp: <span id="kp_roll_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="kp_roll_slider_2">
+              <p>Kp: <span id="kp_roll_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="ki_roll_slider">
+              <p>Ki: <span id="ki_roll_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="ki_roll_slider_2">
+              <p>Ki: <span id="ki_roll_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kd_roll_slider">
+              <p>Kd: <span id="kd_roll_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="kd_roll_slider_2">
+              <p>Kd: <span id="kd_roll_slider_value_2"></span></p>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="pitch" role="tabpanel" aria-labelledby="pitch-tab">
+            <h3>Pitch</h3>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kp_pitch_slider">
+              <p>Kp: <span id="kp_pitch_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="kp_pitch_slider_2">
+              <p>Kp: <span id="kp_pitch_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="ki_pitch_slider">
+              <p>Ki: <span id="ki_pitch_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="ki_pitch_slider_2">
+              <p>Ki: <span id="ki_pitch_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="200" onclick="pubPID_params()" value="0" class="slider" id="kd_pitch_slider">
+              <p>Kd: <span id="kd_pitch_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0" step="0.001" class="slider" id="kd_pitch_slider_2">
+              <p>Kd: <span id="kd_pitch_slider_value_2"></span></p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="yaw" role="tabpanel" aria-labelledby="yaw-tab">
+            <h3>Yaw</h3>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="99" onclick="pubPID_params()" value="0" class="slider" id="kp_yaw_slider">
+              <p>Kp: <span id="kp_yaw_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="2.000" max="3.000" onclick="pubPID_params()" value="2.335" step="0.001" class="slider" id="kp_yaw_slider_2">
+              <p>Kp: <span id="kp_yaw_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="99" onclick="pubPID_params()" value="0" class="slider" id="ki_yaw_slider">
+              <p>Ki: <span id="ki_yaw_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.000" max="1.000" onclick="pubPID_params()" value="0.038" step="0.001" class="slider" id="ki_yaw_slider_2">
+              <p>Ki: <span id="ki_yaw_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="0" max="99" onclick="pubPID_params()" value="0" class="slider" id="kd_yaw_slider">
+              <p>Kd: <span id="kd_yaw_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="4.000" max="5.000" onclick="pubPID_params()" value="4" step="0.001" class="slider" id="kd_yaw_slider_2">
+              <p>Kd: <span id="kd_yaw_slider_value_2"></span></p>
+            </div><br/>
+            <div class="slidecontainer">
+              <input type="range" min="-180" max="180" onclick="pubPID_setpoints()" value="0" class="slider" id="sp_yaw_slider">
+              <p>Sp: <span id="sp_yaw_slider_value"></span></p>
+            </div>
+            <div class="slidecontainer">
+              <input type="range" min="0.00" max="1.00" onclick="pubPID_setpoints()" value="0" step="0.01" class="slider" id="sp_yaw_slider_2">
+              <p>Sp: <span id="sp_yaw_slider_value_2"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!--End PID Controller -->
+    </div>
+
+          <div class="tab-pane fade" id="tools" role="tabpanel" aria-labelledby="tools-tab">
+            <h2 id="tools">Tools</h2>
+            <div class="row">
+              <div class="col-md-5">
+                <label>Front camera topic: </label>
+                <input type="text"  id="f_camera" name="f_camera" placeholder="/camera/image" value="">
+                <div id="f_camera_img"></div>
+              </div>
+              <div class="col-md-5">
+                <label>Bottom camera topic: </label>
+                <input type="text"  id="b_camera" name="b_camera" placeholder="/camera/image" value="">
+                <div id="b_camera_img"></div>
+              </div>
+              <div class="col-md-2 col-sm-2">
+                <button class="btn btn-lg btn-success" onclick="watchdog()" id="watchdog">View Camera</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div id="topic_list"></div>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-lg btn-success" onclick="getTopics()" id="allTopic">View list of All Topics</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Topic Name: </label>
+                <input type="text"  id="topicName" name="topicName" placeholder="/web_output" value="">
+                <label>Topic Type: </label>
+                <input type="text"  id="topicType" name="topicType" placeholder="std_msgs/String" value="">
+                <div id="topicData"></div>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-lg btn-success" onclick="subscribeTopic()" id="subTopic">Subscribe Topic</button>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        
+      </footer>
+      <!-- Footer end -->
+  <script src="jquery.min.js"></script>
+  <script src="bootstrap.min.js"></script>
+  <script src="main.js"></script>
+  <script src="thruster_controller.js"></script>
+  <script src="pid_controller.js"></script>
+  <script src="tiburon_commander.js"></script>
+</body>
+</html>
