@@ -22,3 +22,18 @@ This is the web interface to control ros based bot. Using this web-ui we can con
 3. Now, open any modern browser and type 'http://ip address/this project'.
 
 4. To open in other devices, connect both devices with same network and use above address to view web page.
+
+## Features
+1. *Start/Stop* new topic (For now only predefined topics can be started)
+2. Subscribe any topic
+4. View live camera stream
+5. Get list of all topics
+6. Get logs of topics to debug
+7. Publish values using sliders.
+
+## ToDo
+1. *Start/Stop* required topic
+2. Publish any required topic
+3. Enhance UI/UX
+4. Add more features like rqtplot 2d and 3d.
+5. Get Gazebo view in browser
